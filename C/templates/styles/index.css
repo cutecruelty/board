@@ -1,0 +1,25 @@
+:root{
+    --primary: #1e293b;
+    --muted: #a0a0a0;
+    --background: #f5f7fa;
+    --card: #ffffff;
+    --border: #e0e0e0;
+    --border-accent:  #a5a5a5;
+    --focus-ring: 0 0 0 3px rgba(30, 41, 59, 0.1);
+    --shadow-lite:0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--background);
+}
+
+.container{
+  padding: 20px 0;
+}
