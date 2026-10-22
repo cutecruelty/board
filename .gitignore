@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local SQLite database (recreated by the server on startup)
+*.sqlite
+*.sqlite-journal
