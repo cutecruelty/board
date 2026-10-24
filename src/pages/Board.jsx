@@ -12,11 +12,20 @@ export default function Board() {
     return { x, y };
   }
 
-  const shapes = [
+  const [shapes, setShapes] = useState([
     { id: 1, type: "rect", x: 100, y: 100, width: 200, height: 100 },
     { id: 2, type: "circle", x: 500, y: 300, radius: 60 },
     { id: 3, type: "line", x1: 700, y1: 100, x2: 900, y2: 300 },
-  ];
+  ]);
+
+  function editShape(id, x, y) {
+    setShapes = shapes.map((s) => {
+      if (s.id === id) {
+        return { ...s, x, y };
+      }
+      return s;
+    });
+  }
 
   return (
     <svg
