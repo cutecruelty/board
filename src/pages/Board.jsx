@@ -3,12 +3,12 @@ import { useState, useRef } from "react";
 export default function Board() {
   const [selected, setSelected] = useState(null);
   const svgRef = useRef(null);
+  const dragId = useRef(null);
 
   function getPoint(e) {
     const box = svgRef.current.getBoundingClientRect();
     const x = ((e.clientX - box.left) / box.width) * 1600;
     const y = ((e.clientY - box.top) / box.height) * 900;
-
     return { x, y };
   }
 
@@ -30,67 +30,71 @@ export default function Board() {
   }
 
   return (
-    <>
-      <svg
-        viewBox="0 0 1600 900"
-        style={{ width: "100%", border: "1px solid black" }}
-        ref={svgRef}
-        onClick={(e) => {
-          const p = getPoint(e);
-          console.log(p);
-          editShape(1, p.x, p.y);
-        }}
-      >
-        <rect
-          width={1600}
-          height={900}
-          fill="white"
-          onClick={() => setSelected(null)}
-        />
-        {shapes.map((s) => {
-          if (s.type === "rect") {
-            return (
-              <rect
-                key={s.id}
-                x={s.x}
-                y={s.y}
-                width={s.width}
-                height={s.height}
-                onClick={() => setSelected(s.id)}
-                stroke={selected === s.id ? "orange" : "black"}
-                strokeWidth={3}
-              ></rect>
-            );
-          } else if (s.type === "circle") {
-            return (
-              <circle
-                key={s.id}
-                cx={s.x}
-                cy={s.y}
-                r={s.radius}
-                onClick={() => setSelected(s.id)}
-                stroke={selected === s.id ? "orange" : "black"}
-                strokeWidth={3}
-              ></circle>
-            );
-          } else if (s.type === "line") {
-            return (
-              <line
-                key={s.id}
-                x1={s.x1}
-                y1={s.y1}
-                x2={s.x2}
-                y2={s.y2}
-                onClick={() => setSelected(s.id)}
-                stroke={selected === s.id ? "orange" : "black"}
-                strokeWidth={3}
-              />
-            );
-          } else {
-            return null;
-          }
-        })}
-      </svg>
-    </>
+    <svg
+      viewBox="0 0 1600 900"
+      style={{ width: "100%", border: "1px solid black" }}
+      ref={svgRef}
+      onPointerMove={(e) => {
+        if (dragId.current === null) return;
+        const p = getPoint(e);
+        editShape(dragId.current, p.x, p.y);
+      }}
+      onPointerUp={() => {
+        dragId.current = null;
+      }}
+    >
+      <rect
+        width={1600}
+        height={900}
+        fill="white"
+        onClick={() => setSelected(null)}
+      />
+      {shapes.map((s) => {
+        if (s.type === "rect") {
+          return (
+            <rect
+              key={s.id}
+              x={s.x}
+              y={s.y}
+              width={s.width}
+              height={s.height}
+              onPointerDown={() => {
+                dragId.current = s.id;
+              }}
+              onClick={() => setSelected(s.id)}
+              stroke={selected === s.id ? "orange" : "black"}
+              strokeWidth={3}
+            ></rect>
+          );
+        } else if (s.type === "circle") {
+          return (
+            <circle
+              key={s.id}
+              cx={s.x}
+              cy={s.y}
+              r={s.radius}
+              onClick={() => setSelected(s.id)}
+              stroke={selected === s.id ? "orange" : "black"}
+              strokeWidth={3}
+            ></circle>
+          );
+        } else if (s.type === "line") {
+          return (
+            <line
+              key={s.id}
+              x1={s.x1}
+              y1={s.y1}
+              x2={s.x2}
+              y2={s.y2}
+              onClick={() => setSelected(s.id)}
+              stroke={selected === s.id ? "orange" : "black"}
+              strokeWidth={3}
+            />
+          );
+        } else {
+          return null;
+        }
+      })}
+    </svg>
   );
 }
