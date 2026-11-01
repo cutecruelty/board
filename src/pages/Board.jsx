@@ -25,7 +25,16 @@ export default function Board() {
             ></rect>
           );
         } else if (s.type === "circle") {
-          return <circle key={s.id} cx={s.x} cy={s.y} r={s.radius}></circle>;
+          return (
+            <circle
+              key={s.id}
+              cx={s.x}
+              onClick={() => setSelected(s.id)}
+              stroke={selected === s.id ? "orange" : "black"}
+              cy={s.y}
+              r={s.radius}
+            ></circle>
+          );
         } else if (s.type === "line") {
           return (
             <line
@@ -34,7 +43,8 @@ export default function Board() {
               y1={s.y1}
               x2={s.x2}
               y2={s.y2}
-              stroke="#000"
+              onClick={() => setSelected(s.id)}
+              stroke={selected === s.id ? "orange" : "black"}
             ></line>
           );
         } else {
